@@ -37,14 +37,14 @@ export	BUILD_DIR
 
 $(BUILD_DIR)$(TEMU_TARGET): 
 	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(SRCS)
-	@git commit --allow-empty -q -m "compile"
+	$(CC) $(CFLAGS) -o $@ $(SRCS) $(LDFLAGS)
+#	@git commit --allow-empty -q -m "compile"
 
-run: $(BUILD_DIR)$(TEMU_TARGET)
+run: clean $(BUILD_DIR)$(TEMU_TARGET)
 	@./$(BUILD_DIR)$(TEMU_TARGET) $(USER_PROGRAM)
-	@git commit --allow-empty -q -m "run"
+#	@git commit --allow-empty -q -m "run"
 
 clean:
-	rm -r $(BUILD_DIR)
-	rm log.txt
+	rm -r $(BUILD_DIR) || true
+	rm log.txt || true
 
