@@ -1,5 +1,6 @@
 #include "temu.h"
 #include <stdlib.h>
+#include <string.h>
 
 CPU_state cpu;
 
@@ -14,3 +15,11 @@ void display_reg() {
         printf("%s\t\t0x%08x\t\t%d\n", "$pc", cpu.pc, cpu.pc);
 }
 
+uint32_t reg_val_w(const char *name) {
+    for (int i = 0; i < 32; ++i) {
+        if (strcmp(name, regfile[i]) == 0) {
+            return reg_w(i);
+        }
+    }
+    return 0;
+}

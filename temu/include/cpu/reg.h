@@ -38,4 +38,6 @@ static inline int check_reg_index(int index) {
 
 extern const char* regfile[];
 
+uint32_t reg_val_w(const char *name);
+
 #endif

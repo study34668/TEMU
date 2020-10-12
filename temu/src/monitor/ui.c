@@ -1,5 +1,6 @@
 #include "monitor.h"
 #include "temu.h"
+#include "expr.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -36,6 +37,17 @@ static int cmd_q(char *args) {
 	return -1;
 }
 
+static int cmd_p(char *args) {
+    bool success;
+    int val = expr(args, &success);
+    if (success) {
+        printf("%d\n", val);
+    } else {
+        printf("Invalid expression\n");
+    }
+    return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -45,10 +57,10 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
-	{ "q", "Exit TEMU", cmd_q }
+	{ "q", "Exit TEMU", cmd_q },
 
 	/* TODO: Add more commands */
-
+    { "p", "Print value of the expression", cmd_p }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
