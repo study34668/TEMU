@@ -18,6 +18,10 @@ void init_wp_pool() {
 	free_ = wp_pool;
 }
 
+WP *wp_gethead() {
+	return head;
+}
+
 /* TODO: Implement the functionality of watchpoint */
 
 

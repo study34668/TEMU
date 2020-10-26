@@ -12,4 +12,6 @@ typedef struct watchpoint {
 
 } WP;
 
+WP *wp_gethead();
+
 #endif

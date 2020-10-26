@@ -1,6 +1,7 @@
 #include "monitor.h"
 #include "temu.h"
 #include "expr.h"
+#include "watchpoint.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -60,6 +61,29 @@ static int cmd_si(char *args) {
 	return 0;
 }
 
+static int cmd_info(char *args){
+	if(args == NULL){
+		printf("No args.\n");
+		return 0;
+	}
+        if(args[0] == 'r'){
+                display_reg();
+        }else if(args[0] == 'w'){
+                WP *p;
+                if((p = wp_gethead()) == NULL){
+                        printf("There is no watchpoint.\n");
+                }else{
+                        while(p){
+                                printf("WatchPoint %d\n",p->NO);
+                                p = p->next;
+                        }
+                }
+        }else{
+                printf("Wrong args!");
+        }
+        return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -72,7 +96,8 @@ static struct {
 	{ "q", "Exit TEMU", cmd_q },
         { "si", "Single Step", cmd_si },
 	/* TODO: Add more commands */
-    { "p", "Print value of the expression", cmd_p }
+    { "p", "Print value of the expression", cmd_p },
+	{ "info", "Print states of program", cmd_info}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
