@@ -48,6 +48,18 @@ static int cmd_p(char *args) {
     return 0;
 }
 
+static int cmd_si(char *args) {
+	bool success;
+	int i=expr(args, &success);
+	if(success){
+		for(;i>0;--i){
+			cpu_exec(1);
+		}
+	}
+	else cpu_exec(1);
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -58,7 +70,7 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit TEMU", cmd_q },
-
+        { "si", "Single Step", cmd_si },
 	/* TODO: Add more commands */
     { "p", "Print value of the expression", cmd_p }
 };
