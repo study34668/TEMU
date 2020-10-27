@@ -102,13 +102,23 @@ static int cmd_x(char *args){
 
 	bool success;
 	int val = expr(arg2, &success);
-	if (success) {
-		printf("%d\n", val);
-	} else {
+	if (!success) {
 		printf("Invalid expression\n");
+		return 0;
 	}
 
-	
+	int N = atoi(arg1);
+	printf("Ptint %d 4-bytes starting at %d...\n", N, val);
+	for(int i = 0;i < N;i++)
+	{
+		printf("%d:",val);
+		for(int j = 0;j < 4;j++)
+		{
+			printf(" %02x",mem_read(val, 1));
+			val += 1;
+		}
+		printf("\n");
+	}
 	return 0;
 }
 
