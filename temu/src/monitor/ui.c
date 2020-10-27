@@ -42,9 +42,9 @@ static int cmd_p(char *args) {
 	bool success;
 	int val = expr(args, &success);
 	if (success) {
-	printf("%d\n", val);
+		printf("%d\n", val);
 	} else {
-	printf("Invalid expression\n");
+		printf("Invalid expression\n");
 	}
 	return 0;
 }
@@ -84,6 +84,34 @@ static int cmd_info(char *args){
 	return 0;
 }
 
+static int cmd_x(char *args){
+	char* arg1 = strtok(args," ");
+	if(!arg1)
+	{
+		printf("Two arguments are needed!\n");
+		return 0;
+	}
+
+	char* arg2 = arg1 + strlen(arg1) + 1;
+	arg2 = strtok(arg2," ");
+	if(!arg2)
+	{
+		printf("Two arguments are needed!\n");
+		return 0;
+	}
+
+	bool success;
+	int val = expr(arg2, &success);
+	if (success) {
+		printf("%d\n", val);
+	} else {
+		printf("Invalid expression\n");
+	}
+
+	
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -98,7 +126,7 @@ static struct {
 	/* TODO: Add more commands */
 	{ "p", "Print value of the expression", cmd_p },
 	{ "info", "Print states of program", cmd_info},
-        
+	{"x", "Print N consecutive 4-bytes in hexadecimal format starting at EXPR.", cmd_x}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
