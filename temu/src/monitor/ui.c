@@ -39,14 +39,14 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_p(char *args) {
-    bool success;
-    int val = expr(args, &success);
-    if (success) {
-        printf("%d\n", val);
-    } else {
-        printf("Invalid expression\n");
-    }
-    return 0;
+	bool success;
+	int val = expr(args, &success);
+	if (success) {
+	printf("%d\n", val);
+	} else {
+	printf("Invalid expression\n");
+	}
+	return 0;
 }
 
 static int cmd_si(char *args) {
@@ -66,22 +66,22 @@ static int cmd_info(char *args){
 		printf("No args.\n");
 		return 0;
 	}
-        if(args[0] == 'r'){
-                display_reg();
-        }else if(args[0] == 'w'){
-                WP *p;
-                if((p = wp_gethead()) == NULL){
-                        printf("There is no watchpoint.\n");
-                }else{
-                        while(p){
-                                printf("WatchPoint %d\n",p->NO);
-                                p = p->next;
-                        }
-                }
-        }else{
-                printf("Wrong args!");
-        }
-        return 0;
+	if(args[0] == 'r'){
+		      display_reg();
+	}else if(args[0] == 'w'){
+		      WP *p;
+		      if((p = wp_gethead()) == NULL){
+		              printf("There is no watchpoint.\n");
+		      }else{
+		              while(p){
+		                      printf("WatchPoint %d\n",p->NO);
+		                      p = p->next;
+		              }
+		      }
+	}else{
+		      printf("Wrong args!");
+	}
+	return 0;
 }
 
 static int cmd_help(char *args);
@@ -94,10 +94,11 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit TEMU", cmd_q },
-        { "si", "Single Step", cmd_si },
+	{ "si", "Single Step", cmd_si },
 	/* TODO: Add more commands */
-    { "p", "Print value of the expression", cmd_p },
-	{ "info", "Print states of program", cmd_info}
+	{ "p", "Print value of the expression", cmd_p },
+	{ "info", "Print states of program", cmd_info},
+        
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
