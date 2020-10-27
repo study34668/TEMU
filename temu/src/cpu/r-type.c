@@ -27,3 +27,45 @@ make_helper(and) {
 	sprintf(assembly, "and   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
 }
 
+make_helper(slt) {
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = (int)op_src1->val < (int)op_src2->val;
+	sprintf(assembly, "slt   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+make_helper(sltu) {
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = op_src1->val < op_src2->val;
+	sprintf(assembly, "sltu   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+make_helper(or) {
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = op_src1->val | op_src2->val;
+	sprintf(assembly, "or   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+make_helper(srl) {
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = op_src2->val >> ((instr & SHAMT_MASK) >> FUNC_SIZE);
+	sprintf(assembly, "srl   %s,   %s,   %d", REG_NAME(op_dest->reg), REG_NAME(op_src2->reg), (instr & SHAMT_MASK) >> FUNC_SIZE);
+}
+
+make_helper(srlv) {
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = op_src2->val >> (op_src1->val & 0x1F);
+	sprintf(assembly, "srlv   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
+}
+
+make_helper(mthi) {
+
+	decode_r_type(instr);
+	cpu.hi = op_src1->val;
+	sprintf(assembly, "mthi   %s", REG_NAME(op_src1->reg));
+}
+

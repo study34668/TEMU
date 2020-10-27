@@ -34,3 +34,31 @@ make_helper(ori) {
 	sprintf(assembly, "ori   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
 }
 
+make_helper(slti){
+
+	decode_imm_type(instr);
+	reg_w(op_dest->reg) = (int)op_src1->val < (int)op_src2->val;
+	sprintf(assembly, "slti   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
+}
+
+make_helper(sltiu){
+
+	decode_imm_type(instr);
+	reg_w(op_dest->reg) = op_src1->val < op_src2->val;
+	sprintf(assembly, "sltiu   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
+}
+
+make_helper(lw) {
+
+	decode_imm_type(instr);
+	reg_w(op_dest->reg) = mem_read(op_src1->val + (uint32_t)(((int)(op_src2->val << 16)) >> 16), 4);
+	sprintf(assembly, "lw   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
+}
+
+make_helper(sb) {
+
+	decode_imm_type(instr);
+	mem_write(op_src1->val + (uint32_t)(((int)(op_src2->val << 16)) >> 16), 1, reg_b(op_dest->reg));
+	sprintf(assembly, "sb   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
+}
+
