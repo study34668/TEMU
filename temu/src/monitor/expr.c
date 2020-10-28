@@ -197,7 +197,7 @@ uint32_t eval(int p, int q, bool *success) {
     } else if (p == q) {
         *success = true;
         switch (tokens[p].type) {
-            case REG: return reg_val_w(tokens[p].str + 1);
+            case REG: return reg_val_w(tokens[p].str);
             case NUM: return atoi(tokens[p].str);
             case HEX_NUM: return strtol(tokens[p].str, NULL, 16);
             default: {
