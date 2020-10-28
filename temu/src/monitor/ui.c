@@ -42,7 +42,7 @@ static int cmd_p(char *args) {
 	bool success;
 	int val = expr(args, &success);
 	if (success) {
-		printf("%d\n", val);
+		printf("0x%08x %d\n", val, val);
 	} else {
 		printf("Invalid expression\n");
 	}
