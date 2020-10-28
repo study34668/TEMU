@@ -49,6 +49,25 @@ static int cmd_p(char *args) {
 	return 0;
 }
 
+static int cmd_w(char *args) {
+	WP *result = new_wp();
+	if(result == NULL){
+		printf("Watchpoints have been too many So this is invalid\n");
+	}else {
+		strcpy(result->exp,args);
+		//printf("exp in cmd is %s\n",result->exp);
+		bool success;
+		uint32_t eval = expr(args,&success);
+		if(success){
+			result->old_value = eval;
+		}
+		else
+			printf("Invalid expression\n");
+	}
+	//printf("cmd is ok\n");
+	return 0;
+}
+
 static int cmd_si(char *args) {
 	bool success;
 	int i=expr(args, &success);
@@ -135,6 +154,7 @@ static struct {
 	{ "si", "Single Step", cmd_si },
 	/* TODO: Add more commands */
 	{ "p", "Print value of the expression", cmd_p },
+	{ "w", "Set a watchpoint with an expression", cmd_w },
 	{ "info", "Print states of program", cmd_info},
 	{"x", "Print N consecutive 4-bytes in hexadecimal format starting at EXPR.", cmd_x}
 };

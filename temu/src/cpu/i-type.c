@@ -62,3 +62,53 @@ make_helper(sb) {
 	sprintf(assembly, "sb   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
 }
 
+// I add ******************************************************************
+make_helper(addi){
+
+	decode_imm_type(instr);
+	uint32_t result;
+	if(op_src2->val >> 15 == 1){
+		result = 0xFFFF0000 | op_src2->val;
+	}else 
+		result = op_src2->val;
+
+	uint32_t tmp1 = 0x00000001 & (op_src1->val >> 31);
+	uint32_t tmp2 = 0x00000001 & (op_src2->val >> 31);
+	result = op_src1->val + result;
+	
+	if(result >> 31 != tmp1 && tmp1 == tmp2){
+		printf("addi-i over flow\n");
+		return;
+	}
+	reg_w(op_dest->reg) = result; 
+	sprintf(assembly, "addi   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
+}
+
+make_helper(andi){
+
+	decode_imm_type(instr);
+	reg_w(op_dest->reg) = (op_src1->val &  op_src2->val);
+	sprintf(assembly, "andi   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
+}
+
+make_helper(lb){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
+	uint32_t addr = extend_imm + op_src1->val;
+	uint32_t result =mem_read(addr, 1);
+	result = (0x000000FF & result);
+	result = result  >> 7 == 1? (0xFFFFFF00 | result) : result;
+	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
+}
+
+make_helper(lbu){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
+	uint32_t addr = extend_imm + op_src1->val;
+	uint32_t result =mem_read(addr, 1);
+	result = (0x000000FF & result);
+	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
+}
+
