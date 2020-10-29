@@ -44,15 +44,15 @@ WP* new_wp(){
 }
 
 void free_wp(WP *wp){
-	
+	wp->next = free_;
+	free_ = wp;
 }
 
 WP *get_head(){
 	return head;
 }
 
-
-WP *wp_gethead() {
+WP *wp_gethead(){
 	return head;
 }
 

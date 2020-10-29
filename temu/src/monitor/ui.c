@@ -141,6 +141,24 @@ static int cmd_x(char *args){
 	return 0;
 }
 
+static int cmd_d(char *args){
+	WP *pre = get_head();
+	WP *uf;
+
+	bool success;
+	int i = expr(args,&success);
+	while(pre != NULL){
+	if(pre->NO == i ){
+	 uf->next = pre->next; //remove i from head
+	 free_wp(pre) ;   //inserve into free_
+	 printf("Completely delete the watchpoint(%d).\n",i);
+	 return 0;
+         }
+	else{uf = pre; pre = pre->next;}
+      }
+ 	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -156,7 +174,8 @@ static struct {
 	{ "p", "Print value of the expression", cmd_p },
 	{ "w", "Set a watchpoint with an expression", cmd_w },
 	{ "info", "Print states of program", cmd_info},
-	{"x", "Print N consecutive 4-bytes in hexadecimal format starting at EXPR.", cmd_x}
+	{ "x", "Print N consecutive 4-bytes in hexadecimal format starting at EXPR.", cmd_x},
+	{ "d", "Delete a watchpoint with an expression", cmd_d}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
