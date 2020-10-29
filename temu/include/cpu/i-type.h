@@ -14,4 +14,7 @@ make_helper(andi);
 make_helper(lb);
 make_helper(lbu);
 
+make_helper(addiu);
+make_helper(lh);
+make_helper(lhu);
 #endif

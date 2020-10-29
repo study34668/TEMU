@@ -16,4 +16,10 @@ make_helper(sll);
 make_helper(sllv);
 make_helper(mfhi);
 
+make_helper(sub);
+make_helper(subu);
+make_helper(nor);
+make_helper(sra);
+make_helper(srav);
+make_helper(mflo);
 #endif

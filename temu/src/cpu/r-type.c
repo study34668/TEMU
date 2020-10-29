@@ -80,8 +80,8 @@ make_helper(addu){
 make_helper(add){
 
 	decode_r_type(instr);
-	uint32_t tmp1 = 0x00000001 & (op_src1->val);
-	uint32_t tmp2 = 0x00000001 & (op_src2->val);
+	uint32_t tmp1 = 0x80000000 & (op_src1->val);
+	uint32_t tmp2 = 0x80000000 & (op_src2->val);
 	uint32_t result = op_src1->val + op_src2->val;
 	if(tmp1 == tmp2 && result >> 31 != tmp1){
 		printf("add-r overflow\n");
@@ -115,4 +115,62 @@ make_helper(mfhi){
 	reg_w(op_dest->reg)  = cpu.hi;
 	sprintf(assembly, "mfhi   %s", REG_NAME(op_dest->reg));
 }
+//*************
+make_helper(subu){
 
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = (op_src1->val - op_src2->val);
+	sprintf(assembly, "subu   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+make_helper(sub){
+
+	decode_r_type(instr);
+	uint32_t tmp1 = 0x80000000 & (op_src1->val);
+	uint32_t tmp2 = 0x80000000 & (op_src2->val);
+	uint32_t result = op_src1->val - op_src2->val;
+	if(tmp1 != tmp2 && result >> 31 != tmp1){
+		printf("sub-r overflow\n");
+		return ;	
+	}
+	reg_w(op_dest->reg) = result;
+	sprintf(assembly, "sub   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+make_helper(nor){
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = ~(op_src1->val | op_src2->val);
+	sprintf(assembly, "nor   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
+
+make_helper(sra){
+
+	decode_r_type(instr);
+	uint32_t result = op_src2->val;
+	uint32_t s = (instr & SHAMT_MASK) >> FUNC_SIZE;
+	int r = result;
+	r = r >> s;
+	result = r;
+	reg_w(op_dest->reg) = result;
+	sprintf(assembly, "sra   %s,   %s,   %d", REG_NAME(op_dest->reg), REG_NAME(op_src2->reg), (instr & SHAMT_MASK) >> FUNC_SIZE);
+}
+
+make_helper(srav){
+
+	decode_r_type(instr);
+	uint32_t result = op_src2->val;
+	uint32_t s = op_src1->val & 0x1F;
+	int r = result;
+	r = r >> s;
+	result = r;
+	reg_w(op_dest->reg) = result;
+	sprintf(assembly, "srav   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
+}
+
+make_helper(mflo){
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg)  = cpu.lo;
+	sprintf(assembly, "mflo   %s", REG_NAME(op_dest->reg));
+}

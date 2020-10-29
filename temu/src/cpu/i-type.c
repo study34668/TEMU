@@ -112,3 +112,44 @@ make_helper(lbu){
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
+//*******
+make_helper(addiu){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
+	reg_w(op_dest->reg) = (op_src1->val + extend_imm);
+	sprintf(assembly, "addiu   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
+}
+
+make_helper(lh){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
+	uint32_t addr = extend_imm + op_src1->val;
+	uint32_t result =mem_read(addr, 2);
+
+	if(addr & 1)
+	{
+		printf("lh address error at %d\n", addr);
+		return;
+	}
+	result = (0x0000FFFF & result);
+	result = result  >> 15 == 1? (0xFFFF0000 | result) : result;
+	sprintf(assembly, "lh   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
+}
+
+make_helper(lhu){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
+	uint32_t addr = extend_imm + op_src1->val;
+	uint32_t result =mem_read(addr, 2);
+
+	if(addr & 1)
+	{
+		printf("lhu address error at %d\n", addr);
+		return;
+	}
+	result = (0x0000FFFF & result);
+	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
+}
