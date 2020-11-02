@@ -48,6 +48,12 @@ make_helper(or) {
 	sprintf(assembly, "or   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
 }
 
+make_helper(xor){
+
+	decode_r_type(instr);
+	reg_w(op_dest->reg) = (~op_src1->val & op_src2->val) | (op_src1->val & (op_src2->val));
+	sprintf(assembly, "xor   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
+}
 make_helper(srl) {
 
 	decode_r_type(instr);
@@ -69,6 +75,22 @@ make_helper(mthi) {
 	sprintf(assembly, "mthi   %s", REG_NAME(op_src1->reg));
 }
 
+make_helper(mult){
+
+	decode_r_type(instr);
+	long tmp = (int)op_src1->val * (int)op_src2->val;
+	cpu.lo = tmp & 0x00000000ffffffff;
+	cpu.hi = tmp >> 0x20;
+	sprintf(assembly, "mult   %s,   %s", REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
+}
+make_helper(multu){
+
+	decode_r_type(instr);
+	unsigned long tmp = op_src1->val * op_src2->val;
+	cpu.lo = 0x00000000ffffffff & tmp;
+	cpu.hi = tmp >> 0x20;
+	sprintf(assembly, "multu   %s,   %s", REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
+}
 // I ADD *******************************************************************
 make_helper(addu){
 
@@ -115,6 +137,14 @@ make_helper(mfhi){
 	reg_w(op_dest->reg)  = cpu.hi;
 	sprintf(assembly, "mfhi   %s", REG_NAME(op_dest->reg));
 }
+
+make_helper(mtlo){
+
+	decode_r_type(instr);
+	cpu.lo = op_src1->val;
+	sprintf(assembly,"mtlo   %s", REG_NAME(op_src1->reg));
+}
+
 //*************
 make_helper(subu){
 

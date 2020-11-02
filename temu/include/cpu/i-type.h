@@ -3,11 +3,14 @@
 
 make_helper(lui);
 make_helper(ori);
+make_helper(xori);
 
 make_helper(slti);
 make_helper(sltiu);
 make_helper(lw);
 make_helper(sb);
+make_helper(sh);
+make_helper(sw);
 
 make_helper(addi);
 make_helper(andi);

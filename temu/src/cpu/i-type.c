@@ -34,6 +34,13 @@ make_helper(ori) {
 	sprintf(assembly, "ori   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
 }
 
+make_helper(xori){
+
+	decode_imm_type(instr);
+	reg_w(op_dest->reg) = (~op_src1->val & op_src2->val) | (op_src1->val & (op_src2->val));
+	sprintf(assembly, "xori   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
+}
+
 make_helper(slti){
 
 	decode_imm_type(instr);
@@ -62,6 +69,31 @@ make_helper(sb) {
 	sprintf(assembly, "sb   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
 }
 
+make_helper(sh){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	uint32_t addr = extend_imm + op_src1->val;
+	
+	if((addr & 0x01) != 0){
+	  printf("Address Error.\n"); 
+	}
+	else mem_write(addr, 2 , reg_b(op_dest->reg));
+	sprintf(assembly, "sh   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
+}
+
+make_helper(sw){
+
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	uint32_t addr = extend_imm + op_src1->val;
+	if((addr & 0x11)!=0){
+ 	 printf("Address Error.\n");	
+ 	}
+	else{
+	mem_write(addr, 4, reg_b(op_dest->reg));}
+	sprintf(assembly, "sw   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
+}
 // I add ******************************************************************
 make_helper(addi){
 

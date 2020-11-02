@@ -9,12 +9,16 @@ make_helper(or);
 make_helper(srl);
 make_helper(srlv);
 make_helper(mthi);
+make_helper(xor);
+make_helper(mult);
+make_helper(multu);
 
 make_helper(add);
 make_helper(addu);
 make_helper(sll);
 make_helper(sllv);
 make_helper(mfhi);
+make_helper(mtlo);
 
 make_helper(sub);
 make_helper(subu);
