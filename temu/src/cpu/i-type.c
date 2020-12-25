@@ -83,7 +83,7 @@ make_helper(sh){
 		//printf("Address Error.\n");
 		SignalException(addr, 0x05);
 	}
-	else mem_write(addr, 2 , reg_b(op_dest->reg));
+	else mem_write(addr, 2 , reg_h(op_dest->reg));
 	sprintf(assembly, "sh   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
 }
 
