@@ -25,11 +25,11 @@ uint32_t reg_val_w(const char *name) {
             return reg_w(i);
         }
     }
-
-void SignalException(uint32_t type){
-    
-}    
     return 0;
+}
+
+void SignalException(uint32_t type){    
+    return;
 }
 
 uint32_t reg_val_w_cp0(const char *name) {
