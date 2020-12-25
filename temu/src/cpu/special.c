@@ -44,9 +44,12 @@ make_helper(jal){
 	cpu.pc = cpu.pc - 4;
 }
 make_helper(syscall){
-
+	SignalException(0,0x08);
 }
 make_helper(eret){
-	
+	uint32_t temp = cp0.status;
+	uint32_t exl_mask = 0xfffffffd;
+	temp = temp & exl_mask;
+	cp0.status = temp;
 }
 

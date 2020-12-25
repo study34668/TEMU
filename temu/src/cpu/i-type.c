@@ -76,7 +76,8 @@ make_helper(sh){
 	uint32_t addr = extend_imm + op_src1->val;
 	
 	if((addr & 0x01) != 0){
-	  printf("Address Error.\n"); 
+		//printf("Address Error.\n");
+		SignalException(addr, 0x05);
 	}
 	else mem_write(addr, 2 , reg_b(op_dest->reg));
 	sprintf(assembly, "sh   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
@@ -87,8 +88,9 @@ make_helper(sw){
 	decode_imm_type(instr);
 	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
 	uint32_t addr = extend_imm + op_src1->val;
-	if((addr & 0x11)!=0){
- 	 printf("Address Error.\n");	
+	if((addr & 0x3)!=0){
+		//printf("Address Error.\n");
+		SignalException(addr, 0x05);
  	}
 	else{
 	mem_write(addr, 4, reg_b(op_dest->reg));}
@@ -109,8 +111,9 @@ make_helper(addi){
 	result = op_src1->val + result;
 	
 	if(result >> 31 != tmp1 && tmp1 == tmp2){
-		printf("addi-i over flow\n");
-		return;
+		//printf("addi-i over flow\n");
+		//return;
+		SignalException(0,0x0c);
 	}
 	reg_w(op_dest->reg) = result; 
 	sprintf(assembly, "addi   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
@@ -162,8 +165,9 @@ make_helper(lh){
 
 	if(addr & 1)
 	{
-		printf("lh address error at %d\n", addr);
-		return;
+		//printf("lh address error at %d\n", addr);
+		//return;
+		SignalException(addr, 0x04);
 	}
 	result = (0x0000FFFF & result);
 	result = result  >> 15 == 1? (0xFFFF0000 | result) : result;
@@ -179,8 +183,9 @@ make_helper(lhu){
 
 	if(addr & 1)
 	{
-		printf("lhu address error at %d\n", addr);
-		return;
+		//printf("lhu address error at %d\n", addr);
+		//return;
+		SignalException(addr, 0x04);
 	}
 	result = (0x0000FFFF & result);
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
