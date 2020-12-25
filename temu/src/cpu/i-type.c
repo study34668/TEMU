@@ -58,6 +58,10 @@ make_helper(sltiu){
 make_helper(lw) {
 
 	decode_imm_type(instr);
+	uint32_t addr = op_src1->val + (uint32_t)(((int)(op_src2->val << 16)) >> 16);
+	if((addr & 0x3) != 0){
+		SignalException(addr, 0x04);
+	}
 	reg_w(op_dest->reg) = mem_read(op_src1->val + (uint32_t)(((int)(op_src2->val << 16)) >> 16), 4);
 	sprintf(assembly, "lw   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
 }
@@ -93,7 +97,7 @@ make_helper(sw){
 		SignalException(addr, 0x05);
  	}
 	else{
-	mem_write(addr, 4, reg_b(op_dest->reg));}
+	mem_write(addr, 4, reg_w(op_dest->reg));}
 	sprintf(assembly, "sw   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
 }
 // I add ******************************************************************
@@ -134,6 +138,7 @@ make_helper(lb){
 	uint32_t result =mem_read(addr, 1);
 	result = (0x000000FF & result);
 	result = result  >> 7 == 1? (0xFFFFFF00 | result) : result;
+	reg_b(op_dest->reg) = result;
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
@@ -144,6 +149,7 @@ make_helper(lbu){
 	uint32_t addr = extend_imm + op_src1->val;
 	uint32_t result =mem_read(addr, 1);
 	result = (0x000000FF & result);
+	reg_b(op_dest->reg) = result;
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
@@ -171,6 +177,7 @@ make_helper(lh){
 	}
 	result = (0x0000FFFF & result);
 	result = result  >> 15 == 1? (0xFFFF0000 | result) : result;
+	reg_h(op_dest->reg) = result;
 	sprintf(assembly, "lh   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
@@ -188,6 +195,7 @@ make_helper(lhu){
 		SignalException(addr, 0x04);
 	}
 	result = (0x0000FFFF & result);
+	reg_h(op_dest->reg) = result;
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 

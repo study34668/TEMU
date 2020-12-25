@@ -17,6 +17,8 @@ void display_reg() {
         }
 
         printf("%s\t\t0x%08x\t\t%d\n", "$pc", cpu.pc, cpu.pc);
+	printf("%s\t\t0x%08x\t\t%d\n", "$hi", cpu.hi, cpu.hi);
+	printf("%s\t\t0x%08x\t\t%d\n", "$lo", cpu.lo, cpu.lo);
 }
 
 uint32_t reg_val_w(const char *name) {

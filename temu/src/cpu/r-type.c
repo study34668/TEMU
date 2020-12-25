@@ -57,7 +57,7 @@ make_helper(xor){
 make_helper(srl) {
 
 	decode_r_type(instr);
-	reg_w(op_dest->reg) = op_src2->val >> ((instr & SHAMT_MASK) >> FUNC_SIZE);
+	reg_w(op_dest->reg) = ((int)op_src2->val) >> ((instr & SHAMT_MASK) >> FUNC_SIZE);
 	sprintf(assembly, "srl   %s,   %s,   %d", REG_NAME(op_dest->reg), REG_NAME(op_src2->reg), (instr & SHAMT_MASK) >> FUNC_SIZE);
 }
 
