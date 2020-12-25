@@ -71,6 +71,7 @@ void cpu_exec(volatile uint32_t n) {
 			bool success;
 			//printf("exp is %s\n",p_head->exp);
 			uint32_t now_value = expr(p_head->exp,&success);
+			//printf("old value is %x   and   now value is %x\n",p_head->old_value,now_value);
 			if(now_value != p_head->old_value){
 				flag = false;
 				break;

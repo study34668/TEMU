@@ -20,4 +20,16 @@ make_helper(lbu);
 make_helper(addiu);
 make_helper(lh);
 make_helper(lhu);
+
+
+make_helper(beq);
+make_helper(bne);
+make_helper(bgez);
+make_helper(bgtz);
+make_helper(blez);
+make_helper(bltz);
+make_helper(bltzal);
+make_helper(bgezal);
+
+
 #endif

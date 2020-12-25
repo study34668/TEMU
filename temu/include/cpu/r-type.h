@@ -26,4 +26,14 @@ make_helper(nor);
 make_helper(sra);
 make_helper(srav);
 make_helper(mflo);
+
+
+
+make_helper(jr);
+make_helper(jalr);
+make_helper(mfc0);
+make_helper(mtc0);
+make_helper(div);
+make_helper(divu);
+
 #endif
