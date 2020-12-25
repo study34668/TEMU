@@ -40,4 +40,27 @@ extern const char* regfile[];
 
 uint32_t reg_val_w(const char *name);
 
+// CP0
+typedef struct {
+     union {
+        uint32_t reg[32];
+
+        /* Do NOT change the order of the GPRs' definitions. */
+
+        uint32_t index, random, entrylo0, entrylo1, context, pagemask, wired, reserved1;
+        uint32_t badvaddr, count, entryhi, compare, status, cause, epc, prid;
+        uint32_t config, lladdr, watchlo, watchhi, reserved2, reserved3, reserved4, debug;
+        uint32_t depc, reserved5, errctl, reserved6, taglo, reserved7, errepc, desave;
+     };
+
+} CP0_state;
+
+extern CP0_state cp0;
+
+#define reg_w_cp0(index) (cp0.reg[check_reg_index(index)])
+
+extern const char* regfile_cp0[];
+
+uint32_t reg_val_w_cp0(const char *name);
+
 #endif
