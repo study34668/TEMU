@@ -106,8 +106,9 @@ make_helper(add){
 	uint32_t tmp2 = 0x80000000 & (op_src2->val);
 	uint32_t result = op_src1->val + op_src2->val;
 	if(tmp1 == tmp2 && result >> 31 != tmp1){
-		printf("add-r overflow\n");
-		return ;	
+		//printf("add-r overflow\n");
+		//return ;	
+		SignalException(0,0x0c);
 	}
 	reg_w(op_dest->reg) = result;
 	sprintf(assembly, "add   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
@@ -160,8 +161,9 @@ make_helper(sub){
 	uint32_t tmp2 = 0x80000000 & (op_src2->val);
 	uint32_t result = op_src1->val - op_src2->val;
 	if(tmp1 != tmp2 && result >> 31 != tmp1){
-		printf("sub-r overflow\n");
-		return ;	
+		//printf("sub-r overflow\n");
+		//return ;	
+		SignalException(0,0x0c);
 	}
 	reg_w(op_dest->reg) = result;
 	sprintf(assembly, "sub   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
@@ -208,20 +210,37 @@ make_helper(mflo){
 
 
 make_helper(jr){
-
+	decode_r_type(instr);
+	cpu.pc = cpu.pc + reg_w(op_src1->val) - 4;
 }
 make_helper(jalr){
-
+	decode_r_type(instr);
+	reg_w(31) = cpu.pc + 8;
+	cpu.pc = cpu.pc + reg_w(op_src1->val) - 4;
 }
 make_helper(mfc0){
-
+	decode_r_type(instr);
+	reg_w(op_src2->reg) = reg_w_cp0(op_dest->reg);
 }
 make_helper(mtc0){
-
+	decode_r_type(instr);
+	reg_w_cp0(op_dest->reg) = reg_w(op_src2->reg);
 }
 make_helper(div){
 
+	decode_r_type(instr);
+	int lo = (int)op_src1->val / (int)op_src2->val;
+	int hi = (int)op_src1->val % (int)op_src2->val;
+	cpu.lo = lo;
+	cpu.hi = hi;
+	sprintf(assembly, "div   %s,   %s", REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
 }
 make_helper(divu){
 
+	decode_r_type(instr);
+	uint32_t lo = op_src1->val / op_src2->val;
+	uint32_t hi = op_src1->val % op_src2->val;
+	cpu.lo = lo;
+	cpu.hi = hi;
+	sprintf(assembly, "divu   %s,   %s", REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
 }
