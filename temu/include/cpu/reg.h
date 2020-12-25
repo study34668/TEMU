@@ -40,6 +40,7 @@ extern const char* regfile[];
 
 uint32_t reg_val_w(const char *name);
 
+<<<<<<< HEAD
 // CP0
 typedef struct {
      union {
@@ -62,5 +63,7 @@ extern CP0_state cp0;
 extern const char* regfile_cp0[];
 
 uint32_t reg_val_w_cp0(const char *name);
+
+void SignalException(uint32_t type);
 
 #endif
