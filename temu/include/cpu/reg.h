@@ -40,4 +40,6 @@ extern const char* regfile[];
 
 uint32_t reg_val_w(const char *name);
 
+void SignalException(uint32_t type);
+
 #endif

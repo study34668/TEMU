@@ -204,3 +204,24 @@ make_helper(mflo){
 	reg_w(op_dest->reg)  = cpu.lo;
 	sprintf(assembly, "mflo   %s", REG_NAME(op_dest->reg));
 }
+
+
+
+make_helper(jr){
+
+}
+make_helper(jalr){
+
+}
+make_helper(mfc0){
+
+}
+make_helper(mtc0){
+
+}
+make_helper(div){
+
+}
+make_helper(divu){
+
+}

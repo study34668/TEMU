@@ -185,3 +185,30 @@ make_helper(lhu){
 	result = (0x0000FFFF & result);
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
+
+
+
+make_helper(beq){
+	return;
+}
+make_helper(bne){
+	return;
+}
+make_helper(bgez){
+	return;
+}
+make_helper(bgtz){
+	return;
+}
+make_helper(blez){
+	return;
+}
+make_helper(bltz){
+	return;
+}
+make_helper(bltzal){
+	return;
+}
+make_helper(bgezal){
+	return;
+}
