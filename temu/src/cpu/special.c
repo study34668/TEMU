@@ -1,6 +1,7 @@
 #include "helper.h"
 #include "monitor.h"
 
+extern uint32_t instr;
 extern char assembly[80];
 
 /* invalid opcode */
@@ -32,10 +33,15 @@ make_helper(temu_trap) {
 
 
 make_helper(j){
-
+	uint32_t instr_index = instr & 0x03ffffff;
+	cpu.pc = (cpu.pc & 0xf0000000) | (instr_index << 2);
+	cpu.pc = cpu.pc - 4;
 }
 make_helper(jal){
-
+	reg_w(31) = cpu.pc + 8;
+	uint32_t instr_index = instr & 0x03ffffff;
+	cpu.pc = (cpu.pc & 0xf0000000) | (instr_index << 2);
+	cpu.pc = cpu.pc - 4;
 }
 make_helper(syscall){
 

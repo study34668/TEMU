@@ -189,26 +189,68 @@ make_helper(lhu){
 
 
 make_helper(beq){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	if(op_src1->val == reg_w(op_dest->reg)){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(bne){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	if(op_src1->val != reg_w(op_dest->reg)){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(bgez){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	if(op_src1->val >= 0){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(bgtz){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	if(op_src1->val > 0){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(blez){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	if(op_src1->val <= 0){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(bltz){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	if(op_src1->val < 0){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(bltzal){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	reg_w(31) = cpu.pc + 8;
+	if(op_src1->val >= 0){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }
 make_helper(bgezal){
+	decode_imm_type(instr);
+	uint32_t extend_imm = op_src2->val >> 15 == 1 ? (0xffff0000 | op_src2->val) : op_src2->val;
+	reg_w(31) = cpu.pc + 8;
+	if(op_src1->val < 0){
+		cpu.pc = cpu.pc + (extend_imm << 2);
+	}
 	return;
 }

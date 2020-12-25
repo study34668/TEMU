@@ -208,16 +208,21 @@ make_helper(mflo){
 
 
 make_helper(jr){
-
+	decode_r_type(instr);
+	cpu.pc = cpu.pc + reg_w(op_src1->val) - 4;
 }
 make_helper(jalr){
-
+	decode_r_type(instr);
+	reg_w(31) = cpu.pc + 8;
+	cpu.pc = cpu.pc + reg_w(op_src1->val) - 4;
 }
 make_helper(mfc0){
-
+	decode_r_type(instr);
+	reg_w(op_src2->reg) = reg_w_cp0(op_dest->reg);
 }
 make_helper(mtc0){
-
+	decode_r_type(instr);
+	reg_w_cp0(op_dest->reg) = reg_w(op_src2->reg);
 }
 make_helper(div){
 
