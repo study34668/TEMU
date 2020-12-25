@@ -63,6 +63,6 @@ extern const char* regfile_cp0[];
 
 uint32_t reg_val_w_cp0(const char *name);
 
-void SignalException(uint32_t type);
+void SignalException(uint32_t badaddress, uint32_t type);
 
 #endif

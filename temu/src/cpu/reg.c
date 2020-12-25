@@ -28,7 +28,36 @@ uint32_t reg_val_w(const char *name) {
     return 0;
 }
 
-void SignalException(uint32_t type){    
+void SignalException(uint32_t badaddress,uint32_t type){    
+    if ((cp0.status & 0x00000002) == 2){ // 已处在异常处理状态，判断是否是中断
+        if(type == 0x00){
+            return;
+        }else{
+            cp0.cause = cp0.cause & 0xffffff00;
+            cp0.cause = cp0.cause | (type << 1);
+            cp0.badvaddr = badaddress;
+        }
+    }else {
+        cp0.cause = cp0.cause & 0xffffff00;
+        cp0.cause = cp0.cause | (type << 1);
+        cp0.badvaddr = badaddress;
+
+        uint32_t    last_pc  = cpu.pc-4;
+
+        uint32_t op =  last_pc >> 26;
+        uint32_t func = last_pc &  0x0000003F;
+        if (op == 0x04 || op == 0x05 || op == 0x07 || op == 0x06 || op == 0x02 || op == 0x03 || op == 0x01 || (op==0 && func == 0x08) || (op==0 && func==0x09)){
+            cp0.epc = last_pc;
+            cp0.cause = cp0.cause | 0x80000000;
+        }else{
+            cp0.epc = cpu.pc;
+            cp0.cause = cp0.cause & 0x7fffffff;
+        }
+
+        cp0.status = cp0.status | 0x00000002;
+    }
+
+    printf("now there is an exception!\n");
     return;
 }
 
