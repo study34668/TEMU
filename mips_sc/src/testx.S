@@ -10,7 +10,7 @@ main:
    sub $t1, $zero, $t0         # $t1 = 0x4b 75
    subu $t2, $t1, $t0          # $t2 = 0x96 150
    lh $t3, 0x1008($zero)       # $t3 = 0xfffffffe -2
-   mult $t3, $t0               # $hi = 0x0, $lo = 0x8c 140
+   mult $t3, $t0               # $hi = 0x0, $lo = 0x96 150
    mflo $t3                    # $t3 = 0x96 150
    nor $t4, $t3, $t3           # $t4 = 0xffffff69 -151
    and $t5, $t4, $t3           # $t5 = 0

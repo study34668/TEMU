@@ -78,9 +78,12 @@ make_helper(mthi) {
 make_helper(mult){
 
 	decode_r_type(instr);
-	long tmp = (long int)op_src1->val * (long int)op_src2->val;
+	int s1 = op_src1->val;
+	int s2 = op_src2->val;
+	long tmp = (long)s1 * (long)s2;
 	cpu.lo = tmp & 0x00000000ffffffff;
 	cpu.hi = tmp >> 0x20;
+	printf("%lx\n",tmp);
 	sprintf(assembly, "mult   %s,   %s", REG_NAME(op_src2->reg), REG_NAME(op_src1->reg));
 }
 make_helper(multu){

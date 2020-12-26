@@ -10,10 +10,10 @@ main:
    ori $t1, $t1, 0x9acb	# $t1 = 0xc2099acb
    sw $t1, 0x1004($zero)       # [0x1004] = 0xc2099acb
    sub $t2, $t0, $t1           # $t2 = 0x3642d887
-   mult $t0, $t1               # $hi = 0xbc334037 $lo = 0x13e0c606
-   mfhi $t3                    # $t3 = 0xbc334037
+   mult $t0, $t1               # $hi = 0x01dd321a $lo = 0x13e0c606
+   mfhi $t3                    # $t3 = 0x01dd321a
    mflo $t4                    # $t4 = 0x13e0c606
-   sra $t5, $t3, 7             # $t5 = 0xff786680
+   sra $t5, $t3, 7             # $t5 = 0x0003ba64
    nor $t6, $t5, $t2           # $t6 = 0x00850178
    nor $t7, $t4, $t3           # $t7 = 0x400c39c8
    sh $t6, 0x1000($zero)       # [0x1000] = 0xf84c0178

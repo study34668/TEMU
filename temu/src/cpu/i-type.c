@@ -178,7 +178,7 @@ make_helper(lh){
 	}
 	result = (0x0000FFFF & result);
 	result = result  >> 15 == 1? (0xFFFF0000 | result) : result;
-	reg_h(op_dest->reg) = result;
+	reg_w(op_dest->reg) = result;
 	sprintf(assembly, "lh   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
@@ -196,7 +196,7 @@ make_helper(lhu){
 		SignalException(addr, 0x04);
 	}
 	result = (0x0000FFFF & result);
-	reg_h(op_dest->reg) = result;
+	reg_w(op_dest->reg) = result;
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
