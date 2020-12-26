@@ -22,5 +22,6 @@ main:
    lb $t0, 4($zero)		#$t0 = 0x0000000f
    lbu $t0, 4($zero)		#$t0 = 0x0000000f
    add $t0, $t0, $v1		#$t0 = 0xf000001e
+   sub $t0, $v1, $v0           #$t0 = 0xEFFFFFFF
    
    HIT_GOOD_TRAP		#stop temu
