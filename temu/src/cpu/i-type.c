@@ -133,12 +133,13 @@ make_helper(andi){
 make_helper(lb){
 
 	decode_imm_type(instr);
-	uint32_t extend_imm = op_src2->val >> 15 == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
+	uint32_t extend_imm = (op_src2->val >> 15) == 1? (0xFFFF0000 | op_src2->val) : op_src2->val;
 	uint32_t addr = extend_imm + op_src1->val;
 	uint32_t result =mem_read(addr, 1);
 	result = (0x000000FF & result);
-	result = result  >> 7 == 1? (0xFFFFFF00 | result) : result;
-	reg_b(op_dest->reg) = result;
+	printf("byte is %x\n",result);
+	result = (result  >> 7) == 1? (0xFFFFFF00 | result) : result;
+	reg_w(op_dest->reg) = result;
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
@@ -149,7 +150,7 @@ make_helper(lbu){
 	uint32_t addr = extend_imm + op_src1->val;
 	uint32_t result =mem_read(addr, 1);
 	result = (0x000000FF & result);
-	reg_b(op_dest->reg) = result;
+	reg_w(op_dest->reg) = result;
 	sprintf(assembly, "lb   %s,   %d(%s)", REG_NAME(op_dest->reg), extend_imm,REG_NAME(op_src1->reg));
 }
 
