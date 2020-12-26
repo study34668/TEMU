@@ -93,7 +93,7 @@ make_helper(sw){
 		SignalException(addr, 0x05);
  	}
 	else{
-	mem_write(addr, 4, reg_b(op_dest->reg));}
+	mem_write(addr, 4, reg_w(op_dest->reg));}
 	sprintf(assembly, "sw   %s,   0x%04x(%s)", REG_NAME(op_dest->reg), op_src2->imm, REG_NAME(op_src1->reg));
 }
 // I add ******************************************************************
