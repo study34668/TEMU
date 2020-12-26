@@ -51,7 +51,7 @@ make_helper(or) {
 make_helper(xor){
 
 	decode_r_type(instr);
-	reg_w(op_dest->reg) = (~op_src1->val & op_src2->val) | (op_src1->val & (op_src2->val));
+	reg_w(op_dest->reg) = (~op_src1->val & op_src2->val) | (op_src1->val & (~op_src2->val));
 	sprintf(assembly, "xor   %s,   %s,   %s", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), REG_NAME(op_src2->reg));
 }
 make_helper(srl) {

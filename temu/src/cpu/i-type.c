@@ -37,7 +37,7 @@ make_helper(ori) {
 make_helper(xori){
 
 	decode_imm_type(instr);
-	reg_w(op_dest->reg) = (~op_src1->val & op_src2->val) | (op_src1->val & (op_src2->val));
+	reg_w(op_dest->reg) = (~op_src1->val & op_src2->val) | (op_src1->val & (~op_src2->val));
 	sprintf(assembly, "xori   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
 }
 
