@@ -98,7 +98,7 @@ static int cmd_info(char *args){
 		              }
 		      }
 	}else{
-		      printf("Wrong args!");
+		      printf("Wrong args!\n");
 	}
 	return 0;
 }
