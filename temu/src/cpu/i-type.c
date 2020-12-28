@@ -44,14 +44,26 @@ make_helper(xori){
 make_helper(slti){
 
 	decode_imm_type(instr);
-	reg_w(op_dest->reg) = (int)op_src1->val < (int)op_src2->val;
+	uint32_t result;
+	if(op_src2->val >> 15 == 1){
+		result = 0xFFFF0000 | op_src2->val;
+	}else{
+		result = op_src2->val;
+	}
+	reg_w(op_dest->reg) = (int)op_src1->val < (int)result;
 	sprintf(assembly, "slti   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
 }
 
 make_helper(sltiu){
 
 	decode_imm_type(instr);
-	reg_w(op_dest->reg) = op_src1->val < op_src2->val;
+	uint32_t result;
+	if(op_src2->val >> 15 == 1){
+                result = 0xFFFF0000 | op_src2->val;
+        }else{
+                result = op_src2->val;
+        }
+	reg_w(op_dest->reg) = op_src1->val < result;
 	sprintf(assembly, "sltiu   %s,   %s,   0x%04x", REG_NAME(op_dest->reg), REG_NAME(op_src1->reg), op_src2->imm);
 }
 
@@ -111,7 +123,7 @@ make_helper(addi){
 		result = op_src2->val;
 
 	uint32_t tmp1 = 0x00000001 & (op_src1->val >> 31);
-	uint32_t tmp2 = 0x00000001 & (op_src2->val >> 31);
+	uint32_t tmp2 = 0x00000001 & (result >> 31);
 	result = op_src1->val + result;
 	
 	if(result >> 31 != tmp1 && tmp1 == tmp2){
