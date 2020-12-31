@@ -89,7 +89,7 @@ static int cmd_info(char *args){
 		      display_reg();
 	}else if(args[0] == 'w'){
 		      WP *p;
-		      if((p = wp_gethead()) == NULL){
+		      if((p = wp_gethead()->next) == NULL){
 		              printf("There is no watchpoint.\n");
 		      }else{
 		              while(p){
